@@ -25,6 +25,7 @@ function Kalshi() {
       placeholder="e.g. Will the US Federal Reserve cut interest rates at its next meeting?"
       runLabel="Price contract"
       outputLabel="Contract analysis"
+      accent="#00D09C"
     />
   );
 }

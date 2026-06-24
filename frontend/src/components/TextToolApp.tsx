@@ -33,6 +33,8 @@ export interface TextToolAppProps {
   controls?: React.ReactNode;
   /** Optionally wrap the raw input before sending it to the model. */
   buildUserContent?: (input: string) => string;
+  /** Optional brand accent color (hex) for the icon and run button. */
+  accent?: string;
 }
 
 export function TextToolApp({
@@ -46,6 +48,7 @@ export function TextToolApp({
   outputLabel = 'Output',
   controls,
   buildUserContent,
+  accent,
 }: TextToolAppProps) {
   const [model, setModel] = useState<string>(DEFAULT_MODEL);
   const [models, setModels] = useState<string[]>([]);
@@ -117,7 +120,10 @@ export function TextToolApp({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
           <h2 className="flex items-center gap-2 text-2xl font-semibold">
-            <Icon className="h-5 w-5 text-primary" />
+            <Icon
+              className="h-5 w-5 text-primary"
+              style={accent ? { color: accent } : undefined}
+            />
             {title}
           </h2>
           <p className="max-w-2xl text-sm text-muted-foreground">
@@ -162,7 +168,11 @@ export function TextToolApp({
                 Stop
               </Button>
             ) : (
-              <Button onClick={run} disabled={!input.trim()}>
+              <Button
+                onClick={run}
+                disabled={!input.trim()}
+                style={accent ? { backgroundColor: accent } : undefined}
+              >
                 <Play className="h-4 w-4" />
                 {runLabel}
               </Button>

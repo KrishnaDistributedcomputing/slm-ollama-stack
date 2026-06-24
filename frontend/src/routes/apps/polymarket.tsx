@@ -25,6 +25,7 @@ function Polymarket() {
       placeholder="e.g. Will a new model beat GPT-4 on the LMArena leaderboard before the end of the quarter?"
       runLabel="Estimate odds"
       outputLabel="Market analysis"
+      accent="#1652F0"
     />
   );
 }

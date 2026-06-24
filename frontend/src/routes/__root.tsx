@@ -27,6 +27,7 @@ import {
   CircleDollarSign,
   CandlestickChart,
   Briefcase,
+  Activity,
   ExternalLink,
   BookOpen,
 } from 'lucide-react';
@@ -179,6 +180,7 @@ const PRIMARY_NAV: NavLink[] = [
 
 const APP_NAV: NavLink[] = [
   { to: '/apps/crm', label: 'CRM (Sales)', icon: Briefcase, color: '#2563eb' },
+  { to: '/apps/monitor', label: 'Monitoring', icon: Activity, color: '#16a34a' },
   { to: '/apps/summarizer', label: 'Summarizer', icon: FileText, color: '#0ea5e9' },
   { to: '/apps/translator', label: 'Translator', icon: Languages, color: '#10b981' },
   { to: '/apps/code-reviewer', label: 'Code Reviewer', icon: Code2, color: '#f59e0b' },

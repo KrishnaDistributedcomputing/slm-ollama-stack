@@ -8,6 +8,7 @@
  */
 
 import { getOllamaUrl } from './endpoint';
+import { recordUsage } from './usage';
 
 export { getOllamaUrl } from './endpoint';
 
@@ -69,10 +70,30 @@ export async function streamChat(
       if (!trimmed) continue;
       try {
         const json = JSON.parse(trimmed) as {
+          model?: string;
           message?: { content?: string };
           done?: boolean;
+          prompt_eval_count?: number;
+          eval_count?: number;
+          total_duration?: number;
+          eval_duration?: number;
         };
         if (json.message?.content) onToken(json.message.content);
+        if (json.done) {
+          const promptTokens = json.prompt_eval_count ?? 0;
+          const completionTokens = json.eval_count ?? 0;
+          if (promptTokens || completionTokens) {
+            recordUsage({
+              at: Date.now(),
+              model: json.model || model,
+              promptTokens,
+              completionTokens,
+              totalTokens: promptTokens + completionTokens,
+              durationMs: Math.round((json.total_duration ?? 0) / 1e6),
+              evalMs: Math.round((json.eval_duration ?? 0) / 1e6),
+            });
+          }
+        }
       } catch {
         // Ignore malformed/partial lines.
       }

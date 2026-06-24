@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import re
+import time
 import uuid
 from pathlib import Path
 from typing import Any
@@ -71,6 +72,48 @@ class Disqualify(BaseModel):
 def _slug(value: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
     return slug or "lead"
+
+
+@app.get("/api/health")
+async def health() -> dict[str, Any]:
+    """Server-side health for components the browser cannot reach directly."""
+    services: list[dict[str, Any]] = []
+
+    # Temporal connectivity.
+    start = time.perf_counter()
+    try:
+        await asyncio.wait_for(get_client(), timeout=5)
+        services.append(
+            {
+                "name": "Temporal",
+                "status": "up",
+                "latency_ms": round((time.perf_counter() - start) * 1000),
+            }
+        )
+    except Exception as exc:  # pragma: no cover - surfaced to dashboard
+        services.append(
+            {"name": "Temporal", "status": "down", "error": str(exc)[:200]}
+        )
+
+    # Supabase Postgres (exercised via the CRM contacts query).
+    start = time.perf_counter()
+    try:
+        rows = await asyncio.to_thread(list_contacts, 1000)
+        services.append(
+            {
+                "name": "Supabase DB",
+                "status": "up",
+                "latency_ms": round((time.perf_counter() - start) * 1000),
+                "detail": f"{len(rows)} CRM contacts",
+            }
+        )
+    except Exception as exc:  # pragma: no cover - surfaced to dashboard
+        services.append(
+            {"name": "Supabase DB", "status": "down", "error": str(exc)[:200]}
+        )
+
+    overall = "up" if all(s["status"] == "up" for s in services) else "degraded"
+    return {"overall": overall, "services": services, "checked_at": time.time()}
 
 
 @app.get("/")

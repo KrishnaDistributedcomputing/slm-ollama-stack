@@ -182,16 +182,15 @@ function HomePage() {
                 </div>
 
                 <div className="mt-auto flex items-center gap-2">
-                  <Button asChild size="sm" className="flex-1">
+                  <Button asChild size="sm" className="flex-1 min-w-0">
                     <Link to="/chat" search={{ model: m.name }}>
                       <Sparkles className="h-4 w-4" />
                       Open in Playground
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="sm" title={`View ${m.name} on Ollama`}>
-                    <a href={brand.url} target="_blank" rel="noreferrer">
+                  <Button asChild variant="outline" size="icon" title={`View ${m.name} on Ollama`}>
+                    <a href={brand.url} target="_blank" rel="noreferrer" aria-label={`View ${m.name} on Ollama`}>
                       <ExternalLink className="h-4 w-4" />
-                      Details
                     </a>
                   </Button>
                 </div>

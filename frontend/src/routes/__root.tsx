@@ -27,6 +27,7 @@ import {
   CircleDollarSign,
   CandlestickChart,
   ExternalLink,
+  BookOpen,
 } from 'lucide-react';
 import {
   getEndpoints,
@@ -131,6 +132,13 @@ function Sidebar() {
           <NavItem key={item.to} {...item} />
         ))}
 
+        <ExternalNavItem
+          href="https://github.com/KrishnaDistributedcomputing/slm-ollama-stack/tree/main/docs"
+          label="Documentation"
+          icon={BookOpen}
+          color="#64748b"
+        />
+
         <div className="pt-4">
           <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Apps
@@ -217,6 +225,39 @@ function NavItem({ to, label, icon: Icon, color }: NavLink) {
       </span>
       {label}
     </Link>
+  );
+}
+
+function ExternalNavItem({
+  href,
+  label,
+  icon: Icon,
+  color,
+}: {
+  href: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="group flex items-center gap-3 rounded-xl px-2.5 py-2 text-sm font-medium text-foreground/80 transition-all hover:bg-muted hover:text-foreground"
+    >
+      <span
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-transform duration-200 group-hover:scale-110"
+        style={{
+          backgroundColor: `color-mix(in srgb, ${color} 16%, transparent)`,
+          color,
+        }}
+      >
+        <Icon className="h-4 w-4" />
+      </span>
+      {label}
+      <ExternalLink className="ml-auto h-3.5 w-3.5 text-muted-foreground" />
+    </a>
   );
 }
 

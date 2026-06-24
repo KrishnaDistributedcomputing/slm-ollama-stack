@@ -60,7 +60,7 @@ const BRANDS: Record<string, ModelBrand> = {
 };
 
 const FALLBACK: ModelBrand = {
-  vendor: 'Ollama model',
+  vendor: 'Community model',
   logo: '🧠',
   url: 'https://ollama.com/library',
 };

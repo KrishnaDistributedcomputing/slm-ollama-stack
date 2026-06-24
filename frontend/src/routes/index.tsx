@@ -8,7 +8,7 @@
 
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
-import { Boxes, Check, Copy, Cpu, ExternalLink, HardDrive, Layers, Plug, RefreshCw, Sparkles, Terminal } from 'lucide-react';
+import { Boxes, Check, Copy, Cpu, HardDrive, Layers, Plug, RefreshCw, Sparkles, Terminal } from 'lucide-react';
 import { getOllamaUrl, listModelDetails, pingOllama, type ModelInfo } from '@/data/ollama';
 import { modelColors } from '@/lib/modelColors';
 import { getModelBrand } from '@/data/modelBrands';
@@ -347,32 +347,19 @@ function ModelCard({ model: m }: { model: ModelInfo }) {
             Open in Playground
           </Link>
         </Button>
-        <div className="grid grid-cols-2 gap-2">
-          <Button asChild variant="outline" size="sm" className="h-8 w-full text-xs">
-            <a
-              href={brand.url}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`View ${m.name} on Ollama`}
-            >
-              <ExternalLink className="h-3.5 w-3.5" />
-              Ollama
-            </a>
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-8 w-full text-xs"
-            onClick={copyName}
-          >
-            {copied ? (
-              <Check className="h-3.5 w-3.5 text-emerald-500" />
-            ) : (
-              <Copy className="h-3.5 w-3.5" />
-            )}
-            {copied ? 'Copied' : 'Copy name'}
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 w-full text-xs"
+          onClick={copyName}
+        >
+          {copied ? (
+            <Check className="h-3.5 w-3.5 text-emerald-500" />
+          ) : (
+            <Copy className="h-3.5 w-3.5" />
+          )}
+          {copied ? 'Copied' : 'Copy name'}
+        </Button>
       </div>
     </Card>
   );

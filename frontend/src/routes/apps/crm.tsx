@@ -101,6 +101,81 @@ function statusBadge(status: string): { label: string; color: string } {
   return { label: 'Active', color: '#2563eb' };
 }
 
+/** Short, human date like "Jun 12, 09:30". */
+function formatDateTime(iso?: string): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+/** Relative time like "3d ago". */
+function timeAgo(iso?: string): string {
+  if (!iso) return '';
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return '';
+  const mins = Math.round((Date.now() - then) / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.round(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.round(hrs / 24);
+  if (days < 30) return `${days}d ago`;
+  const months = Math.round(days / 30);
+  return `${months}mo ago`;
+}
+
+interface DisplayEntry {
+  kind: string;
+  detail: string;
+  at: string;
+  sample: boolean;
+}
+
+/** Demo activity used to populate the timeline when a lead has little history. */
+const SAMPLE_TIMELINE: { kind: string; detail: string; daysAgo: number }[] = [
+  { kind: 'lead', detail: 'Lead created and assigned to an account owner.', daysAgo: 21 },
+  { kind: 'email', detail: 'Intro email sent — introduced the platform and proposed a discovery call.', daysAgo: 19 },
+  { kind: 'call', detail: 'Discovery call completed — captured budget range and top pain points.', daysAgo: 16 },
+  { kind: 'note', detail: 'Champion identified; evaluation expected to close this quarter.', daysAgo: 14 },
+  { kind: 'stage', detail: 'Stage advanced to Qualified after a BANT review.', daysAgo: 11 },
+  { kind: 'meeting', detail: 'Technical demo delivered to the buying committee.', daysAgo: 7 },
+  { kind: 'proposal', detail: 'Proposal drafted with tiered pricing and an ROI summary.', daysAgo: 4 },
+  { kind: 'ai', detail: 'AI-generated value pitch saved to the timeline.', daysAgo: 2 },
+];
+
+/**
+ * Builds the timeline for display: gives every entry a date, supplements sparse
+ * leads with sample demo activity, and sorts newest-first.
+ */
+function buildTimeline(detail: CrmDetail | null): DisplayEntry[] {
+  const now = Date.now();
+  const real: DisplayEntry[] = (detail?.timeline ?? []).map((t, i) => ({
+    kind: t.kind,
+    detail: t.detail,
+    at: t.at || t.created_at || new Date(now - i * 3_600_000).toISOString(),
+    sample: false,
+  }));
+  let entries = real;
+  if (real.length < 4) {
+    const dummy: DisplayEntry[] = SAMPLE_TIMELINE.map((s) => ({
+      kind: s.kind,
+      detail: s.detail,
+      at: new Date(now - s.daysAgo * 86_400_000).toISOString(),
+      sample: true,
+    }));
+    entries = [...real, ...dummy];
+  }
+  return entries.sort(
+    (a, b) => new Date(b.at).getTime() - new Date(a.at).getTime(),
+  );
+}
+
 function leadContext(d: CrmDetail): string {
   const s = d.state;
   const timeline = (d.timeline ?? [])
@@ -215,6 +290,7 @@ function CrmApp() {
   const [contacts, setContacts] = useState<CrmContact[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detail, setDetail] = useState<CrmDetail | null>(null);
+  const [timelineFilter, setTimelineFilter] = useState<string>('all');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -273,6 +349,7 @@ function CrmApp() {
     setSelectedId(id);
     setAiOutput('');
     setAiTask(null);
+    setTimelineFilter('all');
     try {
       const d = await getContact(id);
       setDetail(d);
@@ -1100,30 +1177,108 @@ function CrmApp() {
 
             {/* Timeline */}
             <Card className="space-y-3 p-5">
-              <h3 className="text-sm font-semibold">Activity timeline</h3>
-              <ol className="space-y-2">
-                {(detail?.timeline ?? []).length === 0 && (
-                  <li className="text-sm text-muted-foreground">
-                    No activity yet.
-                  </li>
-                )}
-                {(detail?.timeline ?? []).map((t, i) => (
-                  <li key={i} className="flex gap-3 text-sm">
-                    <span
-                      className="mt-0.5 h-fit shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
-                      style={{
-                        color: ACCENT,
-                        backgroundColor: `color-mix(in srgb, ${ACCENT} 12%, transparent)`,
-                      }}
-                    >
-                      {t.kind}
-                    </span>
-                    <span className="break-words text-muted-foreground">
-                      {t.detail}
-                    </span>
-                  </li>
-                ))}
-              </ol>
+              {(() => {
+                const entries = buildTimeline(detail);
+                const kinds = Array.from(new Set(entries.map((e) => e.kind)));
+                const filtered =
+                  timelineFilter === 'all'
+                    ? entries
+                    : entries.filter((e) => e.kind === timelineFilter);
+                return (
+                  <>
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="text-sm font-semibold">Activity timeline</h3>
+                      <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                        {filtered.length}{' '}
+                        {filtered.length === 1 ? 'event' : 'events'}
+                      </span>
+                    </div>
+
+                    {kinds.length > 1 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => setTimelineFilter('all')}
+                          className={cn(
+                            'rounded-full px-2 py-0.5 text-[11px] font-medium transition',
+                            timelineFilter === 'all'
+                              ? 'text-white'
+                              : 'text-muted-foreground hover:bg-muted',
+                          )}
+                          style={
+                            timelineFilter === 'all'
+                              ? { backgroundColor: ACCENT }
+                              : undefined
+                          }
+                        >
+                          All
+                        </button>
+                        {kinds.map((k) => (
+                          <button
+                            key={k}
+                            type="button"
+                            onClick={() => setTimelineFilter(k)}
+                            className={cn(
+                              'rounded-full px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide transition',
+                              timelineFilter === k
+                                ? 'text-white'
+                                : 'text-muted-foreground hover:bg-muted',
+                            )}
+                            style={
+                              timelineFilter === k
+                                ? { backgroundColor: ACCENT }
+                                : undefined
+                            }
+                          >
+                            {k}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    <ol className="relative ml-1 space-y-4 border-l border-border pl-4">
+                      {filtered.length === 0 && (
+                        <li className="text-sm text-muted-foreground">
+                          No activity yet.
+                        </li>
+                      )}
+                      {filtered.map((t, i) => (
+                        <li key={i} className="relative">
+                          <span
+                            className="absolute -left-[21px] top-1 h-2.5 w-2.5 rounded-full border-2 border-background"
+                            style={{ backgroundColor: ACCENT }}
+                          />
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span
+                              className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+                              style={{
+                                color: ACCENT,
+                                backgroundColor: `color-mix(in srgb, ${ACCENT} 12%, transparent)`,
+                              }}
+                            >
+                              {t.kind}
+                            </span>
+                            <time
+                              className="text-[11px] text-muted-foreground"
+                              title={new Date(t.at).toLocaleString()}
+                            >
+                              {formatDateTime(t.at)} · {timeAgo(t.at)}
+                            </time>
+                            {t.sample && (
+                              <span className="rounded-full bg-muted px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wide text-muted-foreground">
+                                sample
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-1 break-words text-sm text-muted-foreground">
+                            {t.detail}
+                          </p>
+                        </li>
+                      ))}
+                    </ol>
+                  </>
+                );
+              })()}
             </Card>
           </div>
         )}

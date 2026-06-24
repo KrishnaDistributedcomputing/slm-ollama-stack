@@ -23,6 +23,7 @@ import { Route as AppsExplainRouteImport } from './routes/apps/explain'
 import { Route as AppsEmailWriterRouteImport } from './routes/apps/email-writer'
 import { Route as AppsCodeReviewerRouteImport } from './routes/apps/code-reviewer'
 import { Route as AppsBrainstormRouteImport } from './routes/apps/brainstorm'
+import { Route as AppsAzureArchitectureRouteImport } from './routes/apps/azure-architecture'
 import { Route as EntitiesEntityTypeIndexRouteImport } from './routes/entities/$entityType/index'
 import { Route as EntitiesEntityTypeIdRouteImport } from './routes/entities/$entityType/$id'
 
@@ -96,6 +97,11 @@ const AppsBrainstormRoute = AppsBrainstormRouteImport.update({
   path: '/apps/brainstorm',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppsAzureArchitectureRoute = AppsAzureArchitectureRouteImport.update({
+  id: '/apps/azure-architecture',
+  path: '/apps/azure-architecture',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EntitiesEntityTypeIndexRoute = EntitiesEntityTypeIndexRouteImport.update({
   id: '/entities/$entityType/',
   path: '/entities/$entityType/',
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/email': typeof EmailRoute
+  '/apps/azure-architecture': typeof AppsAzureArchitectureRoute
   '/apps/brainstorm': typeof AppsBrainstormRoute
   '/apps/code-reviewer': typeof AppsCodeReviewerRoute
   '/apps/email-writer': typeof AppsEmailWriterRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/email': typeof EmailRoute
+  '/apps/azure-architecture': typeof AppsAzureArchitectureRoute
   '/apps/brainstorm': typeof AppsBrainstormRoute
   '/apps/code-reviewer': typeof AppsCodeReviewerRoute
   '/apps/email-writer': typeof AppsEmailWriterRoute
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/email': typeof EmailRoute
+  '/apps/azure-architecture': typeof AppsAzureArchitectureRoute
   '/apps/brainstorm': typeof AppsBrainstormRoute
   '/apps/code-reviewer': typeof AppsCodeReviewerRoute
   '/apps/email-writer': typeof AppsEmailWriterRoute
@@ -168,6 +177,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/email'
+    | '/apps/azure-architecture'
     | '/apps/brainstorm'
     | '/apps/code-reviewer'
     | '/apps/email-writer'
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/email'
+    | '/apps/azure-architecture'
     | '/apps/brainstorm'
     | '/apps/code-reviewer'
     | '/apps/email-writer'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/email'
+    | '/apps/azure-architecture'
     | '/apps/brainstorm'
     | '/apps/code-reviewer'
     | '/apps/email-writer'
@@ -223,6 +235,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatRoute: typeof ChatRoute
   EmailRoute: typeof EmailRoute
+  AppsAzureArchitectureRoute: typeof AppsAzureArchitectureRoute
   AppsBrainstormRoute: typeof AppsBrainstormRoute
   AppsCodeReviewerRoute: typeof AppsCodeReviewerRoute
   AppsEmailWriterRoute: typeof AppsEmailWriterRoute
@@ -338,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppsBrainstormRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apps/azure-architecture': {
+      id: '/apps/azure-architecture'
+      path: '/apps/azure-architecture'
+      fullPath: '/apps/azure-architecture'
+      preLoaderRoute: typeof AppsAzureArchitectureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/entities/$entityType/': {
       id: '/entities/$entityType/'
       path: '/entities/$entityType'
@@ -359,6 +379,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
   EmailRoute: EmailRoute,
+  AppsAzureArchitectureRoute: AppsAzureArchitectureRoute,
   AppsBrainstormRoute: AppsBrainstormRoute,
   AppsCodeReviewerRoute: AppsCodeReviewerRoute,
   AppsEmailWriterRoute: AppsEmailWriterRoute,

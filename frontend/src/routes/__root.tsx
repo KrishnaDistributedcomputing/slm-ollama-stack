@@ -23,6 +23,7 @@ import {
   GraduationCap,
   Database,
   FileJson,
+  CloudCog,
 } from 'lucide-react';
 import {
   getEndpoints,
@@ -279,6 +280,18 @@ function Sidebar() {
             >
               <FileJson className="h-4 w-4" />
               JSON Builder
+            </Link>
+            <Link
+              to="/apps/azure-architecture"
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                location.pathname === '/apps/azure-architecture'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'hover:bg-muted'
+              )}
+            >
+              <CloudCog className="h-4 w-4" />
+              Azure Architecture
             </Link>
           </div>
         </div>

@@ -14,8 +14,14 @@ import { Route as ChatRouteImport } from './routes/chat'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppsTranslatorRouteImport } from './routes/apps/translator'
 import { Route as AppsSummarizerRouteImport } from './routes/apps/summarizer'
+import { Route as AppsSqlRouteImport } from './routes/apps/sql'
+import { Route as AppsRewriterRouteImport } from './routes/apps/rewriter'
+import { Route as AppsProofreaderRouteImport } from './routes/apps/proofreader'
 import { Route as AppsExtractorRouteImport } from './routes/apps/extractor'
+import { Route as AppsExplainRouteImport } from './routes/apps/explain'
+import { Route as AppsEmailWriterRouteImport } from './routes/apps/email-writer'
 import { Route as AppsCodeReviewerRouteImport } from './routes/apps/code-reviewer'
+import { Route as AppsBrainstormRouteImport } from './routes/apps/brainstorm'
 import { Route as EntitiesEntityTypeIndexRouteImport } from './routes/entities/$entityType/index'
 import { Route as EntitiesEntityTypeIdRouteImport } from './routes/entities/$entityType/$id'
 
@@ -44,14 +50,44 @@ const AppsSummarizerRoute = AppsSummarizerRouteImport.update({
   path: '/apps/summarizer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppsSqlRoute = AppsSqlRouteImport.update({
+  id: '/apps/sql',
+  path: '/apps/sql',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppsRewriterRoute = AppsRewriterRouteImport.update({
+  id: '/apps/rewriter',
+  path: '/apps/rewriter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppsProofreaderRoute = AppsProofreaderRouteImport.update({
+  id: '/apps/proofreader',
+  path: '/apps/proofreader',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppsExtractorRoute = AppsExtractorRouteImport.update({
   id: '/apps/extractor',
   path: '/apps/extractor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppsExplainRoute = AppsExplainRouteImport.update({
+  id: '/apps/explain',
+  path: '/apps/explain',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppsEmailWriterRoute = AppsEmailWriterRouteImport.update({
+  id: '/apps/email-writer',
+  path: '/apps/email-writer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppsCodeReviewerRoute = AppsCodeReviewerRouteImport.update({
   id: '/apps/code-reviewer',
   path: '/apps/code-reviewer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppsBrainstormRoute = AppsBrainstormRouteImport.update({
+  id: '/apps/brainstorm',
+  path: '/apps/brainstorm',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EntitiesEntityTypeIndexRoute = EntitiesEntityTypeIndexRouteImport.update({
@@ -69,8 +105,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/email': typeof EmailRoute
+  '/apps/brainstorm': typeof AppsBrainstormRoute
   '/apps/code-reviewer': typeof AppsCodeReviewerRoute
+  '/apps/email-writer': typeof AppsEmailWriterRoute
+  '/apps/explain': typeof AppsExplainRoute
   '/apps/extractor': typeof AppsExtractorRoute
+  '/apps/proofreader': typeof AppsProofreaderRoute
+  '/apps/rewriter': typeof AppsRewriterRoute
+  '/apps/sql': typeof AppsSqlRoute
   '/apps/summarizer': typeof AppsSummarizerRoute
   '/apps/translator': typeof AppsTranslatorRoute
   '/entities/$entityType/$id': typeof EntitiesEntityTypeIdRoute
@@ -80,8 +122,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/email': typeof EmailRoute
+  '/apps/brainstorm': typeof AppsBrainstormRoute
   '/apps/code-reviewer': typeof AppsCodeReviewerRoute
+  '/apps/email-writer': typeof AppsEmailWriterRoute
+  '/apps/explain': typeof AppsExplainRoute
   '/apps/extractor': typeof AppsExtractorRoute
+  '/apps/proofreader': typeof AppsProofreaderRoute
+  '/apps/rewriter': typeof AppsRewriterRoute
+  '/apps/sql': typeof AppsSqlRoute
   '/apps/summarizer': typeof AppsSummarizerRoute
   '/apps/translator': typeof AppsTranslatorRoute
   '/entities/$entityType/$id': typeof EntitiesEntityTypeIdRoute
@@ -92,8 +140,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/email': typeof EmailRoute
+  '/apps/brainstorm': typeof AppsBrainstormRoute
   '/apps/code-reviewer': typeof AppsCodeReviewerRoute
+  '/apps/email-writer': typeof AppsEmailWriterRoute
+  '/apps/explain': typeof AppsExplainRoute
   '/apps/extractor': typeof AppsExtractorRoute
+  '/apps/proofreader': typeof AppsProofreaderRoute
+  '/apps/rewriter': typeof AppsRewriterRoute
+  '/apps/sql': typeof AppsSqlRoute
   '/apps/summarizer': typeof AppsSummarizerRoute
   '/apps/translator': typeof AppsTranslatorRoute
   '/entities/$entityType/$id': typeof EntitiesEntityTypeIdRoute
@@ -105,8 +159,14 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/email'
+    | '/apps/brainstorm'
     | '/apps/code-reviewer'
+    | '/apps/email-writer'
+    | '/apps/explain'
     | '/apps/extractor'
+    | '/apps/proofreader'
+    | '/apps/rewriter'
+    | '/apps/sql'
     | '/apps/summarizer'
     | '/apps/translator'
     | '/entities/$entityType/$id'
@@ -116,8 +176,14 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/email'
+    | '/apps/brainstorm'
     | '/apps/code-reviewer'
+    | '/apps/email-writer'
+    | '/apps/explain'
     | '/apps/extractor'
+    | '/apps/proofreader'
+    | '/apps/rewriter'
+    | '/apps/sql'
     | '/apps/summarizer'
     | '/apps/translator'
     | '/entities/$entityType/$id'
@@ -127,8 +193,14 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/email'
+    | '/apps/brainstorm'
     | '/apps/code-reviewer'
+    | '/apps/email-writer'
+    | '/apps/explain'
     | '/apps/extractor'
+    | '/apps/proofreader'
+    | '/apps/rewriter'
+    | '/apps/sql'
     | '/apps/summarizer'
     | '/apps/translator'
     | '/entities/$entityType/$id'
@@ -139,8 +211,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatRoute: typeof ChatRoute
   EmailRoute: typeof EmailRoute
+  AppsBrainstormRoute: typeof AppsBrainstormRoute
   AppsCodeReviewerRoute: typeof AppsCodeReviewerRoute
+  AppsEmailWriterRoute: typeof AppsEmailWriterRoute
+  AppsExplainRoute: typeof AppsExplainRoute
   AppsExtractorRoute: typeof AppsExtractorRoute
+  AppsProofreaderRoute: typeof AppsProofreaderRoute
+  AppsRewriterRoute: typeof AppsRewriterRoute
+  AppsSqlRoute: typeof AppsSqlRoute
   AppsSummarizerRoute: typeof AppsSummarizerRoute
   AppsTranslatorRoute: typeof AppsTranslatorRoute
   EntitiesEntityTypeIdRoute: typeof EntitiesEntityTypeIdRoute
@@ -184,6 +262,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppsSummarizerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apps/sql': {
+      id: '/apps/sql'
+      path: '/apps/sql'
+      fullPath: '/apps/sql'
+      preLoaderRoute: typeof AppsSqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps/rewriter': {
+      id: '/apps/rewriter'
+      path: '/apps/rewriter'
+      fullPath: '/apps/rewriter'
+      preLoaderRoute: typeof AppsRewriterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps/proofreader': {
+      id: '/apps/proofreader'
+      path: '/apps/proofreader'
+      fullPath: '/apps/proofreader'
+      preLoaderRoute: typeof AppsProofreaderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/apps/extractor': {
       id: '/apps/extractor'
       path: '/apps/extractor'
@@ -191,11 +290,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppsExtractorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apps/explain': {
+      id: '/apps/explain'
+      path: '/apps/explain'
+      fullPath: '/apps/explain'
+      preLoaderRoute: typeof AppsExplainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps/email-writer': {
+      id: '/apps/email-writer'
+      path: '/apps/email-writer'
+      fullPath: '/apps/email-writer'
+      preLoaderRoute: typeof AppsEmailWriterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/apps/code-reviewer': {
       id: '/apps/code-reviewer'
       path: '/apps/code-reviewer'
       fullPath: '/apps/code-reviewer'
       preLoaderRoute: typeof AppsCodeReviewerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps/brainstorm': {
+      id: '/apps/brainstorm'
+      path: '/apps/brainstorm'
+      fullPath: '/apps/brainstorm'
+      preLoaderRoute: typeof AppsBrainstormRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/entities/$entityType/': {
@@ -219,8 +339,14 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
   EmailRoute: EmailRoute,
+  AppsBrainstormRoute: AppsBrainstormRoute,
   AppsCodeReviewerRoute: AppsCodeReviewerRoute,
+  AppsEmailWriterRoute: AppsEmailWriterRoute,
+  AppsExplainRoute: AppsExplainRoute,
   AppsExtractorRoute: AppsExtractorRoute,
+  AppsProofreaderRoute: AppsProofreaderRoute,
+  AppsRewriterRoute: AppsRewriterRoute,
+  AppsSqlRoute: AppsSqlRoute,
   AppsSummarizerRoute: AppsSummarizerRoute,
   AppsTranslatorRoute: AppsTranslatorRoute,
   EntitiesEntityTypeIdRoute: EntitiesEntityTypeIdRoute,

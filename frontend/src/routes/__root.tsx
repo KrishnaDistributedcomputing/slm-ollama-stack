@@ -16,6 +16,12 @@ import {
   Server,
   Check,
   Minus,
+  Mail,
+  SpellCheck,
+  Wand2,
+  Lightbulb,
+  GraduationCap,
+  Database,
 } from 'lucide-react';
 import {
   getEndpoints,
@@ -188,6 +194,78 @@ function Sidebar() {
             >
               <Braces className="h-4 w-4" />
               Data Extractor
+            </Link>
+            <Link
+              to="/apps/email-writer"
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                location.pathname === '/apps/email-writer'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'hover:bg-muted'
+              )}
+            >
+              <Mail className="h-4 w-4" />
+              Email Writer
+            </Link>
+            <Link
+              to="/apps/proofreader"
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                location.pathname === '/apps/proofreader'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'hover:bg-muted'
+              )}
+            >
+              <SpellCheck className="h-4 w-4" />
+              Proofreader
+            </Link>
+            <Link
+              to="/apps/rewriter"
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                location.pathname === '/apps/rewriter'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'hover:bg-muted'
+              )}
+            >
+              <Wand2 className="h-4 w-4" />
+              Tone Rewriter
+            </Link>
+            <Link
+              to="/apps/brainstorm"
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                location.pathname === '/apps/brainstorm'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'hover:bg-muted'
+              )}
+            >
+              <Lightbulb className="h-4 w-4" />
+              Brainstormer
+            </Link>
+            <Link
+              to="/apps/explain"
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                location.pathname === '/apps/explain'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'hover:bg-muted'
+              )}
+            >
+              <GraduationCap className="h-4 w-4" />
+              Explainer
+            </Link>
+            <Link
+              to="/apps/sql"
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                location.pathname === '/apps/sql'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'hover:bg-muted'
+              )}
+            >
+              <Database className="h-4 w-4" />
+              SQL Generator
             </Link>
           </div>
         </div>

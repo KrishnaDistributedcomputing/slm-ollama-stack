@@ -18,6 +18,12 @@ function Proofreader() {
       runLabel="Proofread"
       outputLabel="Corrected text"
       accent="#14b8a6"
+      examples={[
+        {
+          label: 'Draft with errors',
+          text: `Their going to send the report on tuesday, but its not finished yet. Me and the team has reviewed the draft and we think its allmost ready, we just need too fix a couple of typo's and the numbers in the third paragragh.`,
+        },
+      ]}
     />
   );
 }

@@ -18,6 +18,16 @@ function Brainstorm() {
       runLabel="Brainstorm"
       outputLabel="Ideas"
       accent="#eab308"
+      examples={[
+        {
+          label: 'Marketing campaign',
+          text: `Marketing campaign ideas for a startup that sells refillable, plastic-free home-cleaning products to environmentally conscious millennials.`,
+        },
+        {
+          label: 'Team offsite',
+          text: `Activities for a remote engineering team's two-day in-person offsite focused on team bonding and planning the next quarter.`,
+        },
+      ]}
     />
   );
 }

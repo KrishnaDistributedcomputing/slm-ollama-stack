@@ -23,6 +23,16 @@ function EmailWriter() {
       runLabel="Write email"
       outputLabel={`Email (${tone})`}
       accent="#3b82f6"
+      examples={[
+        {
+          label: 'Reschedule standup',
+          text: `Ask the team to move tomorrow's standup from 9am to 11am because of a customer demo. Mention we'll keep it to 15 minutes and that anyone who can't make it should post an async update.`,
+        },
+        {
+          label: 'Follow up after demo',
+          text: `Follow up with a prospect after a product demo: thank them for their time, recap the three pain points we discussed (manual reporting, slow onboarding, no SSO), let them know pricing is attached, and propose a call next week.`,
+        },
+      ]}
       controls={
         <select
           value={tone}

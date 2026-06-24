@@ -18,6 +18,16 @@ function ReviewAnalyzer() {
       runLabel="Analyze reviews"
       outputLabel="Insights"
       accent="#ca8a04"
+      examples={[
+        {
+          label: 'App store reviews',
+          text: `"Love the app but it crashes every time I upload a large file." 2/5
+"Fast support, they fixed my issue within an hour. Highly recommend." 5/5
+"Good value but the mobile version is missing half the features." 3/5
+"Crashed twice during checkout and I lost my cart." 2/5
+"Clean interface and easy to set up. Wish it had dark mode." 4/5`,
+        },
+      ]}
     />
   );
 }

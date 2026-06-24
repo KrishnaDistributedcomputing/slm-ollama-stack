@@ -29,6 +29,16 @@ function AzureArchitecture() {
       runLabel="Assess with WAF"
       outputLabel="Well-Architected review"
       accent="#0078d4"
+      examples={[
+        {
+          label: 'SaaS web app',
+          text: `A multi-tenant SaaS web app with a React frontend, a .NET API, and an Azure SQL database serving customers globally. We expect 50,000 daily active users with traffic spikes during business hours and need 99.9% availability.`,
+        },
+        {
+          label: 'IoT pipeline',
+          text: `An IoT pipeline ingesting telemetry from 10,000 devices, processing it in near real-time, and storing aggregates for dashboards. We care about cost and reliability.`,
+        },
+      ]}
     />
   );
 }

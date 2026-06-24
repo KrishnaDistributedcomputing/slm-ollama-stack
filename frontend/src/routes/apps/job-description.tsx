@@ -18,6 +18,16 @@ function JobDescription() {
       runLabel="Write job description"
       outputLabel="Job description"
       accent="#7c3aed"
+      examples={[
+        {
+          label: 'Backend engineer',
+          text: `Senior Backend Engineer at a fintech startup. Stack: Python, FastAPI, PostgreSQL, AWS. Remote-first, 5+ years of experience, must have worked on payment systems. Reports to the Engineering Manager.`,
+        },
+        {
+          label: 'Product designer',
+          text: `Product Designer for a B2B SaaS company. 3+ years of experience, strong in Figma, design systems, and user research. Hybrid role based in Austin.`,
+        },
+      ]}
     />
   );
 }

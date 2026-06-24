@@ -18,6 +18,12 @@ function FinanceSummary() {
       runLabel="Summarize financials"
       outputLabel="Financial summary"
       accent="#059669"
+      examples={[
+        {
+          label: 'Quarterly results',
+          text: `Q2 results: Revenue was $48.2M, up 22% year-over-year. Gross margin improved to 71% from 68%. Operating expenses rose to $30.1M, driven by sales hiring. Net income was $4.3M versus $2.1M a year ago. Cash and equivalents stood at $112M. Management guided full-year revenue to $200-205M, slightly above prior guidance, citing strong enterprise demand but noting longer sales cycles in EMEA.`,
+        },
+      ]}
     />
   );
 }

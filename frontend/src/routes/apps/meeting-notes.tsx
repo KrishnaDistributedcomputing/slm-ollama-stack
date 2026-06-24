@@ -18,6 +18,19 @@ function MeetingNotes() {
       runLabel="Extract actions"
       outputLabel="Summary & action items"
       accent="#4f46e5"
+      examples={[
+        {
+          label: 'Project sync',
+          text: `[Project sync — 6/24]
+Priya: The API migration is done in staging, we just need sign-off from security.
+Tom: I can review it Thursday. If it passes I'll deploy Friday morning.
+Priya: Marketing wants the feature live before the webinar on the 30th.
+Dana: I'll draft the release notes and send them to Tom by Wednesday.
+Tom: We also need a rollback plan — let's keep v1 running for a week.
+Priya: Agreed. Dana, can you own the customer comms?
+Dana: Yes, I'll send the heads-up email Monday.`,
+        },
+      ]}
     />
   );
 }

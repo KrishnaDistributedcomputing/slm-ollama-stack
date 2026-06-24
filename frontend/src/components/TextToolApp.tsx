@@ -31,6 +31,8 @@ export interface TextToolAppProps {
   outputLabel?: string;
   /** Optional extra controls (e.g. a target-language selector). */
   controls?: React.ReactNode;
+  /** Optional one-click sample inputs to make the tool easy to try. */
+  examples?: { label: string; text: string }[];
   /** Optionally wrap the raw input before sending it to the model. */
   buildUserContent?: (input: string) => string;
   /** Optional brand accent color (hex) for the icon and run button. */
@@ -47,6 +49,7 @@ export function TextToolApp({
   runLabel = 'Run',
   outputLabel = 'Output',
   controls,
+  examples,
   buildUserContent,
   accent,
 }: TextToolAppProps) {
@@ -179,6 +182,28 @@ export function TextToolApp({
             />
             {inputLabel}
           </label>
+          {examples && examples.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-xs font-medium text-muted-foreground">
+                Try:
+              </span>
+              {examples.map((ex) => (
+                <button
+                  key={ex.label}
+                  type="button"
+                  onClick={() => {
+                    setInput(ex.text);
+                    setOutput('');
+                    setError(null);
+                  }}
+                  className="rounded-full border border-border/70 bg-background/80 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  style={{ boxShadow: `inset 0 0 0 1px ${accentEdge}` }}
+                >
+                  {ex.label}
+                </button>
+              ))}
+            </div>
+          )}
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}

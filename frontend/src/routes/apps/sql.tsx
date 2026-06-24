@@ -18,6 +18,16 @@ function SqlGenerator() {
       runLabel="Generate SQL"
       outputLabel="SQL query"
       accent="#f97316"
+      examples={[
+        {
+          label: 'Top customers',
+          text: `Using tables customers(id, name) and orders(id, customer_id, total, created_at), list the top 5 customers by total order value in 2024.`,
+        },
+        {
+          label: 'Monthly signups',
+          text: `Count new users per month for the last 12 months from a users table that has a created_at timestamp.`,
+        },
+      ]}
     />
   );
 }

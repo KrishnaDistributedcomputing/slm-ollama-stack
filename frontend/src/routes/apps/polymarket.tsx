@@ -26,6 +26,16 @@ function Polymarket() {
       runLabel="Estimate odds"
       outputLabel="Market analysis"
       accent="#1652F0"
+      examples={[
+        {
+          label: 'AI leaderboard',
+          text: `Will any open-weight model rank in the top 5 of the LMArena leaderboard by the end of the year?`,
+        },
+        {
+          label: 'Box office',
+          text: `Will the next major superhero film gross over $1 billion worldwide?`,
+        },
+      ]}
     />
   );
 }

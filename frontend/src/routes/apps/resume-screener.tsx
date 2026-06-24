@@ -20,6 +20,14 @@ function ResumeScreener() {
       runLabel="Screen candidate"
       outputLabel="Screening report"
       accent="#9333ea"
+      examples={[
+        {
+          label: 'Backend role + resume',
+          text: `Job: Senior Backend Engineer — Python, FastAPI, PostgreSQL, AWS. 5+ years, payments experience required, must lead a small team.
+---
+Resume: Alex Carter — Software Engineer with 6 years of experience. Built REST APIs in Python (Django, FastAPI) for an e-commerce platform processing Stripe payments. Led a team of 3 engineers. Deployed services on AWS (ECS, RDS Postgres). B.S. in Computer Science.`,
+        },
+      ]}
     />
   );
 }

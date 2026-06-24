@@ -26,6 +26,16 @@ function Kalshi() {
       runLabel="Price contract"
       outputLabel="Contract analysis"
       accent="#00D09C"
+      examples={[
+        {
+          label: 'Fed rate cut',
+          text: `Will the US Federal Reserve cut interest rates at its next meeting?`,
+        },
+        {
+          label: 'Inflation print',
+          text: `Will US CPI inflation come in below 3% year-over-year next month?`,
+        },
+      ]}
     />
   );
 }

@@ -18,6 +18,24 @@ function CodeReviewer() {
       runLabel="Review"
       outputLabel="Review notes"
       accent="#f59e0b"
+      examples={[
+        {
+          label: 'JS pricing bug',
+          text: `function getDiscountedPrice(price, discount) {
+  // discount is a percentage like 20
+  const final = price - price * discount;
+  return final.toFixed(2);
+}`,
+        },
+        {
+          label: 'Python endpoint',
+          text: `@app.route("/users/<id>")
+def get_user(id):
+    query = "SELECT * FROM users WHERE id = " + id
+    row = db.execute(query).fetchone()
+    return jsonify(dict(row))`,
+        },
+      ]}
     />
   );
 }

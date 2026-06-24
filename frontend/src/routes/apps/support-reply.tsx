@@ -18,6 +18,16 @@ function SupportReply() {
       runLabel="Draft reply"
       outputLabel="Suggested reply"
       accent="#0891b2"
+      examples={[
+        {
+          label: 'Double charge',
+          text: `I was charged twice for my Pro subscription this month — once on the 3rd and again on the 5th. I only have one account. Please refund the duplicate charge. Order #PRO-88231.`,
+        },
+        {
+          label: "Can't log in",
+          text: `I can't log into my account. I reset my password twice but the reset link says it's expired. I have an important deadline today and need access urgently.`,
+        },
+      ]}
     />
   );
 }

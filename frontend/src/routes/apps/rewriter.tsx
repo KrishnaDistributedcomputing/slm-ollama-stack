@@ -30,6 +30,16 @@ function Rewriter() {
       runLabel="Rewrite"
       outputLabel={`Rewritten (${style})`}
       accent="#d946ef"
+      examples={[
+        {
+          label: 'Blunt message',
+          text: `This is wrong. You didn't follow the spec at all and now the release is blocked. Fix it before end of day.`,
+        },
+        {
+          label: 'Dry announcement',
+          text: `The office will be closed on Friday for maintenance. Do not come in. Work from home.`,
+        },
+      ]}
       controls={
         <select
           value={style}

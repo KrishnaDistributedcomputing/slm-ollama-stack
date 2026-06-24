@@ -18,6 +18,16 @@ function JsonBuilder() {
       runLabel="Generate JSON"
       outputLabel="JSON"
       accent="#84cc16"
+      examples={[
+        {
+          label: 'User profile',
+          text: `A user profile with id, full name, email, age, a list of roles, and an address with street, city, and country.`,
+        },
+        {
+          label: 'Product catalog',
+          text: `A catalog of 3 products, each with sku, name, price, currency, an in-stock boolean, and an array of tags.`,
+        },
+      ]}
     />
   );
 }

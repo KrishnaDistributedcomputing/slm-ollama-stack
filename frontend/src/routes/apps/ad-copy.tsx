@@ -18,6 +18,16 @@ function AdCopy() {
       runLabel="Generate ad copy"
       outputLabel="Ad copy"
       accent="#ec4899"
+      examples={[
+        {
+          label: 'Wireless earbuds',
+          text: `Wireless earbuds with 30-hour battery, active noise cancellation, and a secure fit. Target audience: commuters and gym-goers aged 18-35. Key benefit: all-day battery that never quits.`,
+        },
+        {
+          label: 'Meal-kit service',
+          text: `A weekly meal-kit subscription with 20-minute recipes and locally sourced ingredients. Target audience: busy professionals who want to cook healthier without the planning.`,
+        },
+      ]}
     />
   );
 }

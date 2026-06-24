@@ -23,6 +23,16 @@ function Explain() {
       runLabel="Explain"
       outputLabel="Explanation"
       accent="#06b6d4"
+      examples={[
+        {
+          label: 'HTTPS',
+          text: `How does HTTPS keep my data secure when I shop online?`,
+        },
+        {
+          label: 'Vector embeddings',
+          text: `What are vector embeddings and why are they used in AI search?`,
+        },
+      ]}
       controls={
         <select
           value={level}

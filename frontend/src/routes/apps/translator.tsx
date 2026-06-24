@@ -34,6 +34,16 @@ function Translator() {
       runLabel="Translate"
       outputLabel={`Translation (${lang})`}
       accent="#10b981"
+      examples={[
+        {
+          label: 'Welcome email',
+          text: `Thank you for signing up for Lumen. Your account is ready — click the button below to verify your email and set up your first project. If you have any questions, just reply to this message and our team will be happy to help.`,
+        },
+        {
+          label: 'Product blurb',
+          text: `Our wireless earbuds deliver 30 hours of battery life, active noise cancellation, and a secure, comfortable fit for workouts and commutes.`,
+        },
+      ]}
       controls={
         <select
           value={lang}

@@ -18,6 +18,12 @@ function ContractAnalyzer() {
       runLabel="Analyze clause"
       outputLabel="Plain-English analysis"
       accent="#b45309"
+      examples={[
+        {
+          label: 'Termination clause',
+          text: `Either party may terminate this Agreement for convenience upon ninety (90) days' written notice. Upon termination, the Client shall pay all fees accrued through the effective date of termination, plus an early-termination fee equal to fifty percent (50%) of the remaining contract value. All licenses granted hereunder shall immediately cease, and the Client shall return or destroy all Confidential Information within thirty (30) days.`,
+        },
+      ]}
     />
   );
 }

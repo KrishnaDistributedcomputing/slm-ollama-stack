@@ -114,56 +114,84 @@ export function TextToolApp({
   }
 
   const colors = modelColors(model);
+  const accentColor = accent ?? 'hsl(222.2 47.4% 11.2%)';
+  const accentSoft = `color-mix(in srgb, ${accentColor} 12%, transparent)`;
+  const accentEdge = `color-mix(in srgb, ${accentColor} 28%, transparent)`;
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="space-y-1">
-          <h2 className="flex items-center gap-2 text-2xl font-semibold">
-            <Icon
-              className="h-5 w-5 text-primary"
-              style={accent ? { color: accent } : undefined}
+    <div className="mx-auto max-w-5xl space-y-8">
+      {/* Header */}
+      <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card/60 p-6 shadow-sm backdrop-blur">
+        <div
+          className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full opacity-40 blur-3xl"
+          style={{ background: accentSoft }}
+        />
+        <div className="relative flex flex-wrap items-start justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ring-1 ring-inset transition-transform duration-300 hover:scale-105"
+              style={{
+                backgroundColor: accentSoft,
+                color: accentColor,
+                boxShadow: `inset 0 0 0 1px ${accentEdge}`,
+              }}
+            >
+              <Icon className="h-6 w-6" />
+            </div>
+            <div className="space-y-1.5">
+              <h2 className="bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-2xl font-bold tracking-tight text-transparent">
+                {title}
+              </h2>
+              <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                {description}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 shadow-sm">
+            {controls}
+            <span
+              className="inline-block h-2.5 w-2.5 rounded-full ring-2 ring-background"
+              style={{ backgroundColor: colors.dot }}
+              title={model}
             />
-            {title}
-          </h2>
-          <p className="max-w-2xl text-sm text-muted-foreground">
-            {description}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          {controls}
-          <span
-            className="inline-block h-2.5 w-2.5 rounded-full"
-            style={{ backgroundColor: colors.dot }}
-            title={model}
-          />
-          <select
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-            className="h-9 rounded-md border border-input bg-background px-2 text-sm"
-          >
-            {(models.length ? models : [DEFAULT_MODEL]).map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
-            ))}
-          </select>
+            <select
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              className="h-7 cursor-pointer rounded-md bg-transparent px-1 text-sm font-medium outline-none focus:ring-0"
+            >
+              {(models.length ? models : [DEFAULT_MODEL]).map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-5 md:grid-cols-2">
         {/* Input */}
-        <Card className="flex flex-col gap-3 p-4">
-          <label className="text-sm font-medium">{inputLabel}</label>
+        <Card className="group flex flex-col gap-4 rounded-2xl border-border/60 p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
+          <label className="flex items-center gap-2 text-sm font-semibold tracking-tight">
+            <span
+              className="h-4 w-1 rounded-full"
+              style={{ backgroundColor: accentColor }}
+            />
+            {inputLabel}
+          </label>
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={placeholder}
-            className="min-h-[260px] flex-1 resize-none"
+            className="min-h-[260px] flex-1 resize-none rounded-xl border-border/60 bg-muted/30 text-sm leading-relaxed transition-colors focus-visible:bg-background"
           />
-          <div className="flex gap-2">
+          <div className="flex items-center justify-between gap-2">
             {streaming ? (
-              <Button variant="destructive" onClick={stop}>
+              <Button
+                variant="destructive"
+                onClick={stop}
+                className="rounded-xl shadow-sm transition-transform active:scale-95"
+              >
                 <Square className="h-4 w-4" />
                 Stop
               </Button>
@@ -171,26 +199,44 @@ export function TextToolApp({
               <Button
                 onClick={run}
                 disabled={!input.trim()}
-                style={accent ? { backgroundColor: accent } : undefined}
+                className="rounded-xl text-primary-foreground shadow-sm transition-all hover:brightness-110 hover:shadow-md active:scale-95 disabled:opacity-50"
+                style={
+                  accent
+                    ? {
+                        backgroundImage: `linear-gradient(135deg, ${accentColor}, color-mix(in srgb, ${accentColor} 75%, black))`,
+                      }
+                    : undefined
+                }
               >
                 <Play className="h-4 w-4" />
                 {runLabel}
               </Button>
             )}
+            <span className="text-xs text-muted-foreground">
+              {input.trim().length > 0
+                ? `${input.trim().length} chars`
+                : 'Ready'}
+            </span>
           </div>
         </Card>
 
         {/* Output */}
-        <Card className="flex flex-col gap-3 p-4">
+        <Card className="flex flex-col gap-4 rounded-2xl border-border/60 p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium">{outputLabel}</label>
+            <label className="flex items-center gap-2 text-sm font-semibold tracking-tight">
+              <span
+                className="h-4 w-1 rounded-full"
+                style={{ backgroundColor: accentColor }}
+              />
+              {outputLabel}
+            </label>
             {output && (
               <button
                 onClick={copy}
-                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border/60 px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 {copied ? (
-                  <Check className="h-3.5 w-3.5" />
+                  <Check className="h-3.5 w-3.5 text-emerald-500" />
                 ) : (
                   <Copy className="h-3.5 w-3.5" />
                 )}
@@ -198,17 +244,28 @@ export function TextToolApp({
               </button>
             )}
           </div>
-          <div className="min-h-[260px] flex-1 overflow-auto whitespace-pre-wrap rounded-md bg-muted p-3 text-sm">
+          <div className="min-h-[260px] flex-1 overflow-auto whitespace-pre-wrap rounded-xl bg-muted/40 p-4 text-sm leading-relaxed ring-1 ring-inset ring-border/40">
             {output || (
               <span className="text-muted-foreground">
                 Output will appear here…
               </span>
             )}
-            {streaming && <span className="animate-pulse">▍</span>}
+            {streaming && (
+              <span
+                className="ml-0.5 inline-block animate-pulse"
+                style={{ color: accentColor }}
+              >
+                ▍
+              </span>
+            )}
           </div>
-          <div className="text-xs text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <span
+              className="inline-block h-1.5 w-1.5 rounded-full"
+              style={{ backgroundColor: colors.dot }}
+            />
             Generated by{' '}
-            <span style={{ color: colors.text }} className="font-medium">
+            <span style={{ color: colors.text }} className="font-semibold">
               {model}
             </span>
           </div>
@@ -216,7 +273,7 @@ export function TextToolApp({
       </div>
 
       {error && (
-        <Card className="border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+        <Card className="flex items-start gap-2 rounded-2xl border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive shadow-sm">
           {error}
         </Card>
       )}

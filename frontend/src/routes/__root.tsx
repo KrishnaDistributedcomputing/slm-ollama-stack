@@ -28,6 +28,14 @@ import {
   CandlestickChart,
   Briefcase,
   Activity,
+  ClipboardList,
+  LifeBuoy,
+  UserPlus,
+  UserSearch,
+  Megaphone,
+  Scale,
+  TrendingUp,
+  Star,
   ExternalLink,
   BookOpen,
 } from 'lucide-react';
@@ -195,6 +203,14 @@ const APP_NAV: NavLink[] = [
   { to: '/apps/azure-architecture', label: 'Azure Architecture', icon: CloudCog, color: '#0078d4' },
   { to: '/apps/polymarket', label: 'Polymarket', icon: CircleDollarSign, color: '#1652F0' },
   { to: '/apps/kalshi', label: 'Kalshi', icon: CandlestickChart, color: '#00D09C' },
+  { to: '/apps/meeting-notes', label: 'Meeting Assistant', icon: ClipboardList, color: '#4f46e5' },
+  { to: '/apps/support-reply', label: 'Support Reply', icon: LifeBuoy, color: '#0891b2' },
+  { to: '/apps/job-description', label: 'Job Description', icon: UserPlus, color: '#7c3aed' },
+  { to: '/apps/resume-screener', label: 'Resume Screener', icon: UserSearch, color: '#9333ea' },
+  { to: '/apps/ad-copy', label: 'Ad Copy', icon: Megaphone, color: '#ec4899' },
+  { to: '/apps/contract-analyzer', label: 'Contract Analyzer', icon: Scale, color: '#b45309' },
+  { to: '/apps/finance-summary', label: 'Finance Summary', icon: TrendingUp, color: '#059669' },
+  { to: '/apps/review-analyzer', label: 'Review Analyzer', icon: Star, color: '#ca8a04' },
 ];
 
 function NavItem({ to, label, icon: Icon, color }: NavLink) {

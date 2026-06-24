@@ -791,96 +791,6 @@ function CrmApp() {
                   )}
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Let the local model help you{' '}
-                <strong>build and close</strong> this deal — grounded only in
-                this lead&apos;s data and activity timeline.
-              </p>
-
-              <div className="space-y-2">
-                <div
-                  className="text-[11px] font-semibold uppercase tracking-wide"
-                  style={{ color: ACCENT }}
-                >
-                  Build the deal
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {AI_BUILD_TASKS.map((t) => (
-                    <Button
-                      key={t.id}
-                      size="sm"
-                      variant={aiTask === t.id ? 'default' : 'outline'}
-                      onClick={() => runAi(t.id)}
-                      disabled={aiStreaming}
-                      style={
-                        aiTask === t.id
-                          ? { backgroundColor: ACCENT }
-                          : undefined
-                      }
-                      className={aiTask === t.id ? 'text-white' : undefined}
-                    >
-                      <t.icon className="h-4 w-4" />
-                      {t.label}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div
-                  className="text-[11px] font-semibold uppercase tracking-wide"
-                  style={{ color: '#10b981' }}
-                >
-                  Close the deal
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {AI_CLOSE_TASKS.map((t) => (
-                    <Button
-                      key={t.id}
-                      size="sm"
-                      variant={aiTask === t.id ? 'default' : 'outline'}
-                      onClick={() => runAi(t.id)}
-                      disabled={aiStreaming}
-                      style={
-                        aiTask === t.id
-                          ? { backgroundColor: ACCENT }
-                          : undefined
-                      }
-                      className={aiTask === t.id ? 'text-white' : undefined}
-                    >
-                      <t.icon className="h-4 w-4" />
-                      {t.label}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              {(aiOutput || aiStreaming) && (
-                <div className="space-y-2">
-                  <div className="whitespace-pre-wrap break-words rounded-xl bg-muted/40 p-4 text-sm leading-relaxed ring-1 ring-inset ring-border/40">
-                    {aiOutput}
-                    {aiStreaming && (
-                      <span
-                        className="ml-0.5 inline-block animate-pulse"
-                        style={{ color: ACCENT }}
-                      >
-                        ▍
-                      </span>
-                    )}
-                  </div>
-                  {aiOutput && !aiStreaming && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={saveAiAsNote}
-                      disabled={busy}
-                    >
-                      <Save className="h-4 w-4" />
-                      Save to timeline
-                    </Button>
-                  )}
-                </div>
-              )}
 
               {/* Efficiency calculator */}
               <div className="rounded-xl border border-border/60 bg-muted/20 p-3">
@@ -1070,6 +980,98 @@ function CrmApp() {
                   </div>
                 )}
               </div>
+
+              <p className="text-xs text-muted-foreground">
+                Let the local model help you{' '}
+                <strong>build and close</strong> this deal — grounded only in
+                this lead&apos;s data and activity timeline.
+              </p>
+
+              <div className="space-y-2">
+                <div
+                  className="text-[11px] font-semibold uppercase tracking-wide"
+                  style={{ color: ACCENT }}
+                >
+                  Build the deal
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {AI_BUILD_TASKS.map((t) => (
+                    <Button
+                      key={t.id}
+                      size="sm"
+                      variant={aiTask === t.id ? 'default' : 'outline'}
+                      onClick={() => runAi(t.id)}
+                      disabled={aiStreaming}
+                      style={
+                        aiTask === t.id
+                          ? { backgroundColor: ACCENT }
+                          : undefined
+                      }
+                      className={aiTask === t.id ? 'text-white' : undefined}
+                    >
+                      <t.icon className="h-4 w-4" />
+                      {t.label}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div
+                  className="text-[11px] font-semibold uppercase tracking-wide"
+                  style={{ color: '#10b981' }}
+                >
+                  Close the deal
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {AI_CLOSE_TASKS.map((t) => (
+                    <Button
+                      key={t.id}
+                      size="sm"
+                      variant={aiTask === t.id ? 'default' : 'outline'}
+                      onClick={() => runAi(t.id)}
+                      disabled={aiStreaming}
+                      style={
+                        aiTask === t.id
+                          ? { backgroundColor: ACCENT }
+                          : undefined
+                      }
+                      className={aiTask === t.id ? 'text-white' : undefined}
+                    >
+                      <t.icon className="h-4 w-4" />
+                      {t.label}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {(aiOutput || aiStreaming) && (
+                <div className="space-y-2">
+                  <div className="whitespace-pre-wrap break-words rounded-xl bg-muted/40 p-4 text-sm leading-relaxed ring-1 ring-inset ring-border/40">
+                    {aiOutput}
+                    {aiStreaming && (
+                      <span
+                        className="ml-0.5 inline-block animate-pulse"
+                        style={{ color: ACCENT }}
+                      >
+                        ▍
+                      </span>
+                    )}
+                  </div>
+                  {aiOutput && !aiStreaming && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={saveAiAsNote}
+                      disabled={busy}
+                    >
+                      <Save className="h-4 w-4" />
+                      Save to timeline
+                    </Button>
+                  )}
+                </div>
+              )}
+
             </Card>
 
             {/* Add note */}

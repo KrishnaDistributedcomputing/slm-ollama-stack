@@ -2,6 +2,30 @@
 
 Phase 1 scaffolding for the JSON-driven Supabase + Temporal starter.
 
+## Screenshots
+
+A live walkthrough of the running stack (`docker compose up -d`), captured from the deployment at http://localhost:3000.
+
+### Local Models Playground
+Small language models served locally in Docker. Models are grouped with the Microsoft Phi family first, each card showing parameters, on-disk size, quantization and "best for" guidance.
+
+![Local Models Playground](docs/screenshots/01-models.png)
+
+### Sales Force Automation CRM
+A durable sales pipeline where every lead is a long-running **Temporal** workflow persisted to **Supabase**, with the local language model layered on top for drafting outreach, suggesting the next best action, summarizing deals and qualifying leads (BANT).
+
+![Sales Force Automation CRM](docs/screenshots/02-crm.png)
+
+### System Monitoring
+Live health for every service in the stack (Ollama, CRM API, Frontend, Temporal, Mailpit, Supabase DB) plus cumulative **token usage** captured from each local model request — totals, per-model breakdown and throughput.
+
+![System Monitoring](docs/screenshots/03-monitor.png)
+
+### AI Chat
+Streaming chat against any locally pulled model, with a model picker, stop control and copy/error states.
+
+![AI Chat](docs/screenshots/04-chat.png)
+
 ## Prerequisites
 - Docker Desktop with Compose v2
 - `make` (comes with macOS/Linux; install via Xcode CLT on macOS)

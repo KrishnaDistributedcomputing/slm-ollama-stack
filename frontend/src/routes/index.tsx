@@ -8,9 +8,10 @@
 
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
-import { Boxes, Cpu, HardDrive, Plug, RefreshCw, Sparkles, Terminal } from 'lucide-react';
+import { Boxes, Cpu, ExternalLink, HardDrive, Plug, RefreshCw, Sparkles, Terminal } from 'lucide-react';
 import { getOllamaUrl, listModelDetails, pingOllama, type ModelInfo } from '@/data/ollama';
 import { modelColors } from '@/lib/modelColors';
+import { getModelBrand } from '@/data/modelBrands';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -140,21 +141,28 @@ function HomePage() {
         <div>
           <h3 className="mb-3 text-lg font-semibold">Available models</h3>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {models.map((m) => (
+            {models.map((m) => {
+              const brand = getModelBrand(m.name);
+              const c = modelColors(m.name);
+              return (
               <Card key={m.name} className="flex flex-col gap-4 p-5">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="h-2.5 w-2.5 shrink-0 rounded-full"
-                      style={{ background: modelColors(m.name).dot }}
-                    />
-                    <span className="break-all font-semibold">{m.name}</span>
-                  </div>
-                  {m.family && (
+                <div className="flex items-start gap-3">
+                  <span
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-2xl ring-1 ring-inset"
+                    style={{
+                      backgroundColor: `color-mix(in srgb, ${c.dot} 14%, transparent)`,
+                      boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${c.dot} 28%, transparent)`,
+                    }}
+                    aria-hidden
+                  >
+                    {brand.logo}
+                  </span>
+                  <div className="min-w-0 space-y-0.5">
+                    <span className="block break-all font-semibold">{m.name}</span>
                     <span className="text-xs text-muted-foreground">
-                      {m.family}
+                      {brand.vendor}
                     </span>
-                  )}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-sm">
@@ -173,14 +181,23 @@ function HomePage() {
                   )}
                 </div>
 
-                <Button asChild size="sm" className="mt-auto">
-                  <Link to="/chat" search={{ model: m.name }}>
-                    <Sparkles className="h-4 w-4" />
-                    Open in Playground
-                  </Link>
-                </Button>
+                <div className="mt-auto flex items-center gap-2">
+                  <Button asChild size="sm" className="flex-1">
+                    <Link to="/chat" search={{ model: m.name }}>
+                      <Sparkles className="h-4 w-4" />
+                      Open in Playground
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm" title={`View ${m.name} on Ollama`}>
+                    <a href={brand.url} target="_blank" rel="noreferrer">
+                      <ExternalLink className="h-4 w-4" />
+                      Details
+                    </a>
+                  </Button>
+                </div>
               </Card>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

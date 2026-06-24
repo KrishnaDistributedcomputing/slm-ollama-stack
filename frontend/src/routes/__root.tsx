@@ -26,6 +26,7 @@ import {
   CloudCog,
   CircleDollarSign,
   CandlestickChart,
+  ExternalLink,
 } from 'lucide-react';
 import {
   getEndpoints,
@@ -36,6 +37,7 @@ import {
 } from '@/data/endpoint';
 import { listModelDetails, type ModelInfo } from '@/data/ollama';
 import { getModelProfile } from '@/data/modelProfiles';
+import { getModelBrand } from '@/data/modelBrands';
 import { modelColors } from '@/lib/modelColors';
 
 export const Route = createRootRoute({
@@ -239,6 +241,7 @@ function ModelGuide() {
     <div className="mt-2 space-y-2 px-1">
       {models.map((m) => {
         const profile = getModelProfile(m.name);
+        const brand = getModelBrand(m.name);
         const c = modelColors(m.name);
         return (
           <div
@@ -248,10 +251,24 @@ function ModelGuide() {
           >
             <div className="flex items-center gap-1.5">
               <span
-                className="h-2 w-2 shrink-0 rounded-full"
-                style={{ background: c.dot }}
-              />
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-xs"
+                style={{
+                  backgroundColor: `color-mix(in srgb, ${c.dot} 16%, transparent)`,
+                }}
+                aria-hidden
+              >
+                {brand.logo}
+              </span>
               <span className="break-all text-xs font-semibold">{m.name}</span>
+              <a
+                href={brand.url}
+                target="_blank"
+                rel="noreferrer"
+                title={`View ${m.name} on Ollama`}
+                className="ml-auto text-muted-foreground hover:text-foreground"
+              >
+                <ExternalLink className="h-3 w-3" />
+              </a>
             </div>
             <p
               className="mt-0.5 text-[11px] font-medium"

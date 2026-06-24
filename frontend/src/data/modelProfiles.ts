@@ -76,6 +76,44 @@ const PROFILES: Record<string, ModelProfile> = {
       'Narrower world knowledge than larger models',
     ],
   },
+  'phi3': {
+    bestFor: 'Microsoft Phi-3 Mini — efficient general assistant',
+    strengths: [
+      'Microsoft’s proven 3.8B mini model',
+      'Great quality-to-size ratio for chat and Q&A',
+      'Reliable instruction following',
+      'Long 128K context window',
+    ],
+    weaknesses: [
+      'Superseded by Phi-3.5 / Phi-4 on reasoning',
+      'Limited world knowledge vs larger models',
+    ],
+  },
+  'phi4-mini': {
+    bestFor: 'Microsoft Phi-4 Mini — latest-gen reasoning & coding',
+    strengths: [
+      'Newest small Phi model from Microsoft',
+      'Improved reasoning, math and coding vs Phi-3.5',
+      'Strong structured / function-style output',
+      'Long 128K context window',
+    ],
+    weaknesses: [
+      'Slightly larger download than Phi-3.5',
+      'Still a small model — not for deep world knowledge',
+    ],
+  },
+  'phi4': {
+    bestFor: 'Microsoft Phi-4 — top-tier reasoning (14B)',
+    strengths: [
+      'Best reasoning and math in the Phi family',
+      'Competitive with much larger models',
+      'Excellent at coding and structured tasks',
+    ],
+    weaknesses: [
+      'Large (~9 GB) — needs plenty of RAM',
+      'Noticeably slower on CPU-only machines',
+    ],
+  },
 };
 
 const FALLBACK: ModelProfile = {

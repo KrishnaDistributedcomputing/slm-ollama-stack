@@ -8,10 +8,11 @@
 
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
-import { Boxes, Cpu, ExternalLink, HardDrive, Plug, RefreshCw, Sparkles, Terminal } from 'lucide-react';
+import { Boxes, Check, Copy, Cpu, ExternalLink, Gauge, HardDrive, Layers, Plug, RefreshCw, Sparkles, Terminal } from 'lucide-react';
 import { getOllamaUrl, listModelDetails, pingOllama, type ModelInfo } from '@/data/ollama';
 import { modelColors } from '@/lib/modelColors';
 import { getModelBrand } from '@/data/modelBrands';
+import { getModelProfile } from '@/data/modelProfiles';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -139,83 +140,214 @@ function HomePage() {
       {/* Model gallery */}
       {models.length > 0 && (
         <div>
-          <h3 className="mb-3 text-lg font-semibold">Available models</h3>
+          <div className="mb-3 flex items-baseline justify-between">
+            <h3 className="text-lg font-semibold">Available models</h3>
+            <span className="text-xs text-muted-foreground">
+              {models.length} ready · Microsoft first
+            </span>
+          </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {models.map((m) => {
-              const brand = getModelBrand(m.name);
-              const c = modelColors(m.name);
-              return (
-              <Card key={m.name} className="flex flex-col gap-4 p-5">
-                <div className="flex items-start gap-3">
-                  <span
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-2xl ring-1 ring-inset"
-                    style={{
-                      backgroundColor: `color-mix(in srgb, ${c.dot} 14%, transparent)`,
-                      boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${c.dot} 28%, transparent)`,
-                    }}
-                    aria-hidden
-                  >
-                    {brand.logo}
-                  </span>
-                  <div className="min-w-0 space-y-0.5">
-                    <span className="block break-all font-semibold">{m.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {brand.vendor}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <Cpu className="h-3.5 w-3.5" />
-                    {m.parameterSize ?? '—'}
-                  </span>
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <HardDrive className="h-3.5 w-3.5" />
-                    {formatBytes(m.size)}
-                  </span>
-                  {m.quantization && (
-                    <span className="col-span-2 text-xs text-muted-foreground">
-                      Quantization: {m.quantization}
-                    </span>
-                  )}
-                </div>
-
-                <div className="mt-auto flex items-center gap-2">
-                  <Button asChild size="sm" className="flex-1 min-w-0">
-                    <Link to="/chat" search={{ model: m.name }}>
-                      <Sparkles className="h-4 w-4" />
-                      Open in Playground
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" size="icon" title={`View ${m.name} on Ollama`}>
-                    <a href={brand.url} target="_blank" rel="noreferrer" aria-label={`View ${m.name} on Ollama`}>
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  </Button>
-                </div>
-              </Card>
-              );
-            })}
+            {[...models]
+              .sort((a, b) => {
+                const am = getModelBrand(a.name).vendor.startsWith('Microsoft')
+                  ? 0
+                  : 1;
+                const bm = getModelBrand(b.name).vendor.startsWith('Microsoft')
+                  ? 0
+                  : 1;
+                if (am !== bm) return am - bm;
+                return (a.size || 0) - (b.size || 0);
+              })
+              .map((m) => (
+                <ModelCard key={m.name} model={m} />
+              ))}
           </div>
         </div>
       )}
 
       {/* Pull-more hint */}
       {online && (
-        <Card className="space-y-2 p-5">
-          <h3 className="flex items-center gap-2 font-semibold">
-            <Terminal className="h-4 w-4" />
-            Add more models
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            Pull additional models into the Docker container, then refresh:
-          </p>
-          <pre className="overflow-x-auto rounded-md bg-muted px-3 py-2 text-sm">
-            docker exec ollama ollama pull llama3.2:1b{'\n'}docker exec ollama ollama pull gemma2:2b
-          </pre>
+        <Card className="space-y-4 p-5">
+          <div className="space-y-2">
+            <h3 className="flex items-center gap-2 font-semibold">
+              <span className="text-lg leading-none">φ</span>
+              Microsoft Phi family — free to download
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Microsoft’s open Phi models punch well above their size on
+              reasoning and coding. Pull one into the Docker container, then
+              refresh:
+            </p>
+            <pre className="overflow-x-auto rounded-md bg-muted px-3 py-2 text-sm">
+              docker exec ollama ollama pull phi3:mini{'\n'}docker exec ollama ollama pull phi4-mini{'\n'}docker exec ollama ollama pull phi4
+            </pre>
+          </div>
+          <div className="space-y-2">
+            <h3 className="flex items-center gap-2 font-semibold">
+              <Terminal className="h-4 w-4" />
+              More small models
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Other lightweight community models that run comfortably locally:
+            </p>
+            <pre className="overflow-x-auto rounded-md bg-muted px-3 py-2 text-sm">
+              docker exec ollama ollama pull llama3.2:1b{'\n'}docker exec ollama ollama pull gemma2:2b
+            </pre>
+          </div>
         </Card>
       )}
     </div>
+  );
+}
+
+function ModelCard({ model: m }: { model: ModelInfo }) {
+  const brand = getModelBrand(m.name);
+  const profile = getModelProfile(m.name);
+  const c = modelColors(m.name);
+  const [copied, setCopied] = useState(false);
+
+  async function copyName() {
+    try {
+      await navigator.clipboard.writeText(m.name);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* clipboard unavailable */
+    }
+  }
+
+  return (
+    <Card
+      className="group relative flex flex-col gap-4 overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+      style={{
+        boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${c.dot} 16%, transparent)`,
+      }}
+    >
+      {/* Accent glow */}
+      <div
+        className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full opacity-60 blur-2xl transition-opacity group-hover:opacity-90"
+        style={{ background: `color-mix(in srgb, ${c.dot} 22%, transparent)` }}
+        aria-hidden
+      />
+
+      {/* Header */}
+      <div className="flex items-start gap-3">
+        <span
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-2xl ring-1 ring-inset transition-transform duration-300 group-hover:scale-110"
+          style={{
+            backgroundColor: `color-mix(in srgb, ${c.dot} 14%, transparent)`,
+            boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${c.dot} 28%, transparent)`,
+          }}
+          aria-hidden
+        >
+          {brand.logo}
+        </span>
+        <div className="min-w-0 flex-1 space-y-0.5">
+          <span className="block break-all font-semibold leading-tight">
+            {m.name}
+          </span>
+          <span className="text-xs text-muted-foreground">{brand.vendor}</span>
+        </div>
+      </div>
+
+      {/* Best for */}
+      <p className="text-sm leading-snug">
+        <span
+          className="font-medium"
+          style={{ color: `color-mix(in srgb, ${c.dot} 65%, var(--foreground))` }}
+        >
+          Best for:{' '}
+        </span>
+        <span className="text-muted-foreground">{profile.bestFor}</span>
+      </p>
+
+      {/* Stat chips */}
+      <div className="flex flex-wrap gap-1.5">
+        <StatChip icon={<Cpu className="h-3.5 w-3.5" />}>
+          {m.parameterSize ?? '—'} params
+        </StatChip>
+        <StatChip icon={<HardDrive className="h-3.5 w-3.5" />}>
+          {formatBytes(m.size)}
+        </StatChip>
+        {m.quantization && (
+          <StatChip icon={<Layers className="h-3.5 w-3.5" />}>
+            {m.quantization}
+          </StatChip>
+        )}
+        {m.family && (
+          <StatChip icon={<Gauge className="h-3.5 w-3.5" />}>{m.family}</StatChip>
+        )}
+      </div>
+
+      {/* Strengths */}
+      <ul className="space-y-1.5">
+        {profile.strengths.slice(0, 3).map((s) => (
+          <li key={s} className="flex items-start gap-2 text-xs text-muted-foreground">
+            <Check
+              className="mt-0.5 h-3.5 w-3.5 shrink-0"
+              style={{ color: c.dot }}
+            />
+            <span className="leading-snug">{s}</span>
+          </li>
+        ))}
+      </ul>
+
+      {/* Actions */}
+      <div className="mt-auto flex flex-col gap-2 pt-1">
+        <Button
+          asChild
+          className="w-full text-white shadow-sm transition-all hover:brightness-110 hover:shadow-md active:scale-[0.98]"
+          style={{
+            backgroundImage: `linear-gradient(135deg, ${c.dot}, color-mix(in srgb, ${c.dot} 72%, black))`,
+          }}
+        >
+          <Link to="/chat" search={{ model: m.name }}>
+            <Sparkles className="h-4 w-4" />
+            Open in Playground
+          </Link>
+        </Button>
+        <div className="grid grid-cols-2 gap-2">
+          <Button asChild variant="outline" size="sm" className="w-full">
+            <a
+              href={brand.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`View ${m.name} on Ollama`}
+            >
+              <ExternalLink className="h-4 w-4" />
+              Ollama
+            </a>
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full"
+            onClick={copyName}
+          >
+            {copied ? (
+              <Check className="h-4 w-4 text-emerald-500" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
+            {copied ? 'Copied' : 'Copy name'}
+          </Button>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function StatChip({
+  icon,
+  children,
+}: {
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
+      {icon}
+      {children}
+    </span>
   );
 }

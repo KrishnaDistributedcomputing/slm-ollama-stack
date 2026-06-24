@@ -42,6 +42,21 @@ const BRANDS: Record<string, ModelBrand> = {
     logo: 'φ',
     url: 'https://ollama.com/library/phi3.5',
   },
+  'phi4': {
+    vendor: 'Microsoft · Phi',
+    logo: 'φ',
+    url: 'https://ollama.com/library/phi4',
+  },
+  'phi4-mini': {
+    vendor: 'Microsoft · Phi',
+    logo: 'φ',
+    url: 'https://ollama.com/library/phi4-mini',
+  },
+  'phi3': {
+    vendor: 'Microsoft · Phi',
+    logo: 'φ',
+    url: 'https://ollama.com/library/phi3',
+  },
 };
 
 const FALLBACK: ModelBrand = {

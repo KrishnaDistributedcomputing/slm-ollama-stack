@@ -148,8 +148,8 @@ Common commands:
 
 ## Deployment
 
-End-to-end instructions for running the stack locally with Docker Compose and
-deploying the SLM to **Azure Container Instances (ACI)**. For the full
+End-to-end instructions for running the stack with Docker Compose, grouped by
+platform — **Linux / macOS**, **Windows**, and **Azure** (cloud). For the full
 step-by-step walkthrough see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md); for SLM
 architecture and the API reference see [docs/SLM.md](docs/SLM.md).
 
@@ -184,7 +184,40 @@ architecture and the API reference see [docs/SLM.md](docs/SLM.md).
 | Mailer | http://localhost:8200 | Mailer service |
 | Chess / game-web | http://localhost:8095 | Demo game app |
 
-### Running on Windows (Docker Desktop + WSL2)
+### Deploy on Linux / macOS (Docker)
+
+Use any terminal (bash/zsh). Requires Docker Engine + Compose v2 (and optionally `make`).
+
+1. **Clone and enter the repo:**
+
+   ```bash
+   git clone https://github.com/KrishnaDistributedcomputing/local-slm-playground.git
+   cd local-slm-playground
+   ```
+
+2. **Copy environment defaults:**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Start the full stack:**
+
+   ```bash
+   docker compose up -d          # start everything
+   # or: make up                 # (add USE_DEV=1 for live-reload mounts)
+   ```
+
+   Start only the SLM services (server + default model pull + showcase):
+
+   ```bash
+   docker compose up -d ollama ollama-pull showcase
+   docker compose logs -f ollama-pull   # wait for "success" — model is ready
+   ```
+
+4. **Open the app** at **http://localhost:3000** and the **Monitoring** app (`/apps/monitor`) to confirm every service is healthy.
+
+### Deploy on Windows (Docker Desktop + WSL2)
 
 The stack runs on Windows 10/11 through Docker Desktop. All commands below use **PowerShell** (the included Azure script is already PowerShell-native).
 
@@ -228,12 +261,7 @@ The stack runs on Windows 10/11 through Docker Desktop. All commands below use *
 
 6. **Open the app** at **http://localhost:3000** and the **Monitoring** app (`/apps/monitor`) to confirm every service is healthy.
 
-7. **Deploy the SLM to Azure** (optional) using the bundled PowerShell script:
-
-   ```powershell
-   az login
-   ./scripts/deploy-azure.ps1
-   ```
+To deploy the SLM to the cloud from Windows, see **Deploy on Azure (Container Instances)** below — the bundled `scripts/deploy-azure.ps1` is PowerShell-native.
 
 **Windows tips**
 - **`make` (optional):** install with `winget install GnuWin32.Make` or `choco install make`, or just use the `docker compose …` commands shown throughout this guide.
@@ -242,22 +270,32 @@ The stack runs on Windows 10/11 through Docker Desktop. All commands below use *
 - **Performance:** give Docker Desktop enough memory in **Settings → Resources** (≥ 4 GB for the default model; more for larger Phi/Gemma/Llama models). Keep the repo on the Windows filesystem (e.g. `C:\…`) when using Docker Desktop's WSL2 integration.
 - **Line endings:** Git may warn `LF will be replaced by CRLF` — this is harmless. Shell scripts run inside Linux containers regardless.
 
-### 1. Local deployment (Docker)
+### Deploy on Azure (Container Instances)
 
-```bash
-cp .env.example .env          # copy environment defaults
-docker compose up -d          # start the full stack
-# or: make up                 # (add USE_DEV=1 for live-reload mounts)
+Push the SLM to **Azure Container Instances (ACI)** so the playground and every app can call a cloud endpoint. Requires the **Azure CLI** (`az`) and an Azure subscription. The script is PowerShell and works on both Windows and Linux/macOS (with PowerShell 7).
+
+```powershell
+az login
+./scripts/deploy-azure.ps1                                   # default model set
+# custom set:
+./scripts/deploy-azure.ps1 -Models 'qwen2.5:0.5b','llama3.2:1b'
 ```
 
-Start only the SLM services (server + default model pull + showcase):
+The script creates the resource group, deploys the Bicep template under
+`infra/azure/`, and prints the public **Ollama endpoint URL**. In the app's
+**header endpoint selector**, choose **+ Add Azure endpoint…** and paste
+`http://<fqdn>:11434` to point the playground and every app at the cloud
+deployment.
 
-```bash
-docker compose up -d ollama ollama-pull showcase
-docker compose logs -f ollama-pull   # wait for "success" — model is ready
+Remove the cloud resources when you're done:
+
+```powershell
+az group delete --name rg-slm-ollama --yes --no-wait
 ```
 
-### 2. Verify
+### Common operations (all platforms)
+
+**Verify the stack**
 
 ```bash
 docker compose ps                     # all services Up / healthy
@@ -273,43 +311,26 @@ curl http://localhost:8096/api/health # CRM API + Temporal + Supabase status
 Then open the app at **http://localhost:3000** and the **Monitoring** app
 (`/apps/monitor`) to confirm every service is reporting healthy.
 
-### 3. Add or switch models
+**Add or switch models** — new models appear automatically in the model pickers and the gallery.
 
 ```bash
 docker exec ollama ollama pull phi4-mini:latest
 docker exec ollama ollama pull gemma2:2b
 ```
 
-New models appear automatically in the model pickers and the gallery.
-
-### 4. Deploy the SLM to Azure (ACI)
-
-```powershell
-az login
-./scripts/deploy-azure.ps1                                   # default model set
-# custom set:
-./scripts/deploy-azure.ps1 -Models 'qwen2.5:0.5b','llama3.2:1b'
-```
-
-The script creates the resource group, deploys the Bicep template under
-`infra/azure/`, and prints the public **Ollama endpoint URL**. In the app's
-**header endpoint selector**, choose **+ Add Azure endpoint…** and paste
-`http://<fqdn>:11434` to point the playground and every app at the cloud
-deployment.
-
-### 5. Rebuilding after changes
+### Rebuilding after changes
 
 - **Frontend** changes (anything under `frontend/`): `docker compose up -d --build frontend`
 - **CRM API** changes (`temporal/src/crm_api.py`): `docker compose up -d --build crm-web`
 - **Showcase** changes: `docker compose build --no-cache showcase && docker compose up -d --force-recreate showcase`
 - **Docs / README only:** no rebuild needed.
 
-### 6. Tear down
+### Tear down
 
 ```bash
 docker compose down                      # stop containers
 docker compose down -v                   # also remove volumes (deletes pulled models + DB)
-az group delete --name rg-slm-ollama --yes --no-wait   # remove Azure resources
+az group delete --name rg-slm-ollama --yes --no-wait   # remove Azure resources (cloud deploy)
 ```
 
 ### Troubleshooting
